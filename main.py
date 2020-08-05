@@ -4,6 +4,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from time import sleep
 from random import randint
+from os import name
+
+OS = name  # os.name: Windows return 'nt', Linux and MacOS return 'posix'
+print(OS)
 
 class remoBot:
     def __init__(self, username, password):
@@ -18,6 +22,7 @@ class remoBot:
                 * self: make the variable available in the class instead of into a single function.
                 base_url: the website base url where the bot should work.
                 random_string: a random string to fill the company name and/or event name.
+                OS: Make the program able to run on MacOS, Linux and Windows by changing the command depending on the current OS
         """
         self.username = username
         self.password = password
@@ -27,7 +32,8 @@ class remoBot:
         self.random_string = ''
         for _ in range (randint(12, 24)): self.random_string += 'abcdefghijklmnopqrstuvwxyz'[randint(0, 25)]
 
-        self.driver = webdriver.Chrome('chromedriver.exe')
+        if OS == 'nt': self.driver = webdriver.Chrome('chromedriver.exe')
+        else: self.driver = webdriver.Chrome()
         self.login()
 
     def login(self):
@@ -89,14 +95,24 @@ class remoBot:
         # self.driver.find_element_by_xpath('//*[@id="root"]/div/div[3]/div/div[2]/div/div/div[1]/div/div[1]/div[1]/label[2]/span[1]').click()
 
     def add_guests(self, eventId, guestList):
+        """
+            Make the program fill guests emails on Remo
+
+            Args:
+                self: make the fonction able to get the class variables.
+                eventId: used to select the event on which guests should be invited
+                guestList: the list of guests to invite
+        """
         self.driver.get(f'{self.base_url}/event/guests/{eventId}')
 
+        # Code to open, read and use the guests file
         with open(guestList, 'r') as f:
             lines = f.read().splitlines()
             for line in lines:
                 self.guests.append(line)
             f.close()
 
+        # Code to write the guests email adresses on Remo
         enter_guest_email = WebDriverWait(self.driver, 20).until(expected_conditions.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[1]/div[1]/div/div[1]/div/div/input')))
         for guest in self.guests:
             enter_guest_email.send_keys(guest + '\n')
@@ -106,5 +122,5 @@ if __name__ == '__main__':
     """
         This condition ensures that the program only works if this file is the one that the user has launched.
     """
-    remo_bot = remoBot('vianney@veremme.org', 'a*4irJ5cS%9BFg6&Cy6X1u@Yn6S%5mv04KTg1MUuuSjTJxbFsn')
-    remo_bot.add_guests('5f2afcc0716baa0007010a6e', 'guests_list_0.txt')
+    remo_bot = remoBot('temp_username', 'temp_password')
+    remo_bot.add_guests('temp_id', 'guests_list_0.txt')
