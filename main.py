@@ -22,6 +22,7 @@ class remoBot:
         self.username = username
         self.password = password
         self.base_url = 'https://live.remo.co'
+        self.guests = []
 
         self.random_string = ''
         for _ in range (randint(12, 24)): self.random_string += 'abcdefghijklmnopqrstuvwxyz'[randint(0, 25)]
@@ -87,10 +88,23 @@ class remoBot:
 
         # self.driver.find_element_by_xpath('//*[@id="root"]/div/div[3]/div/div[2]/div/div/div[1]/div/div[1]/div[1]/label[2]/span[1]').click()
 
+    def add_guests(self, eventId, guestList):
+        self.driver.get(f'{self.base_url}/event/guests/{eventId}')
+
+        with open(guestList, 'r') as f:
+            lines = f.read().splitlines()
+            for line in lines:
+                self.guests.append(line)
+            f.close()
+
+        enter_guest_email = WebDriverWait(self.driver, 20).until(expected_conditions.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[1]/div[1]/div/div[1]/div/div/input')))
+        for guest in self.guests:
+            enter_guest_email.send_keys(guest + '\n')
+
 
 if __name__ == '__main__':
     """
         This condition ensures that the program only works if this file is the one that the user has launched.
     """
     remo_bot = remoBot('vianney@veremme.org', 'a*4irJ5cS%9BFg6&Cy6X1u@Yn6S%5mv04KTg1MUuuSjTJxbFsn')
-    remo_bot.create_event()
+    remo_bot.add_guests('5f2afcc0716baa0007010a6e', 'guests_list_0.txt')
