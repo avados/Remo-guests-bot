@@ -154,7 +154,7 @@ if __name__ == '__main__':
     """
         This condition ensures that the program only works if this file is the one that the user has launched.
     """
-    remo_bot = remoBot('vianney@veremme.org', 'a*4irJ5cS%9BFg6&Cy6X1u@Yn6S%5mv04KTg1MUuuSjTJxbFsn')
-    remo_bot.add_guests('5f2afcc0716baa0007010a6e', 'guests_list_0.txt')
+    remo_bot = remoBot('temp_user', 'temp_pw')
+    remo_bot.add_guests('temp_id', 'temp_file')
     sleep(3)
-    remo_bot.remove_guests('5f2afcc0716baa0007010a6e', 'remove_guests.txt')
+    remo_bot.remove_guests('temp_id', 'temp_file')
