@@ -113,11 +113,16 @@ class remoBot:
             f.close()
 
         # Code to write the guests email adresses on Remo
-        enter_guest_email = WebDriverWait(self.driver, 20).until(expected_conditions.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[1]/div[1]/div/div[1]/div/div/input')))
+        enter_guest_email = WebDriverWait(self.driver, 20).until(expected_conditions.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[1]/div[2]/div/div[1]/div/div/input')))
         for guest in self.guests:
             enter_guest_email.send_keys(guest + '\n')
 
-    def remove_guest(self, eventId, removeList):
+        # Click "add to guests list" button
+        self.driver.find_element_by_xpath('/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[1]/div[3]/button').click()
+        self.driver.find_element_by_xpath('/html/body/div[5]/div[3]/div/div[2]/button[2]').click()
+        
+
+    def remove_guests(self, eventId, removeList):
         """
             Make the program remove guest(s) email(s) on Remo
 
@@ -137,22 +142,19 @@ class remoBot:
             f.close()
 
         # Code to write the guests email adresses on Remo
-        enter_guest_email = WebDriverWait(self.driver, 20).until(expected_conditions.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[3]/div/div[1]/div[1]/div[2]/div/input')))
         for guest in remove_guest:
-            enter_guest_email.send_keys(guest)
+            WebDriverWait(self.driver, 20).until(expected_conditions.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[3]/div/div[1]/div[1]/div[2]/div/input'))).send_keys(guest)
             # If guest is removable : removed - else blocked
-            try:
-                self.driver.find_element_by_xpath('/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[3]/div/div[2]/div/div/div/table/tbody/tr[1]/td[7]/div/button[3]').click()
-                self.driver.find_element_by_xpath('/html/body/div[5]/div[3]/div/div[2]/button[1]').click()
-            except:
-                self.driver.find_element_by_xpath('/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[3]/div/div[2]/div/div/div/table/tbody/tr[1]/td[7]/div/button[2]').click()
-                self.driver.find_element_by_xpath('/html/body/div[5]/div[3]/div/div[2]/button[1]').click()
-            self.driver.find_element_by_xpath('/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[3]/div/div[1]/div[1]/div[2]/div/div[2]/button').click()
+            WebDriverWait(self.driver, 20).until(expected_conditions.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[3]/div/div[2]/div/div/div/table/tbody/tr[1]/td[7]/div/button[3]'))).click()
+            WebDriverWait(self.driver, 20).until(expected_conditions.presence_of_element_located((By.XPATH, '/html/body/div[5]/div[3]/div/div[2]/button[1]'))).click()
+            sleep(1)
 
 
 if __name__ == '__main__':
     """
         This condition ensures that the program only works if this file is the one that the user has launched.
     """
-    remo_bot = remoBot('temp_username', 'temp_password')
-    remo_bot.add_guests('temp_id', 'guests_list_0.txt')
+    remo_bot = remoBot('vianney@veremme.org', 'a*4irJ5cS%9BFg6&Cy6X1u@Yn6S%5mv04KTg1MUuuSjTJxbFsn')
+    remo_bot.add_guests('5f2afcc0716baa0007010a6e', 'guests_list_0.txt')
+    sleep(3)
+    remo_bot.remove_guests('5f2afcc0716baa0007010a6e', 'remove_guests.txt')
