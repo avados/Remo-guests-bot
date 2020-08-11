@@ -117,6 +117,38 @@ class remoBot:
         for guest in self.guests:
             enter_guest_email.send_keys(guest + '\n')
 
+    def remove_guest(self, eventId, removeList):
+        """
+            Make the program remove guest(s) email(s) on Remo
+
+            Args:
+                self: make the fonction able to get the class variables.
+                eventId: used to select the event from which guest(s) should be removed
+                guestList: the list of guests to remove
+        """
+        self.driver.get(f'{self.base_url}/event/guests/{eventId}')
+
+        # Code to open, read and use the guests file
+        remove_guest = []
+        with open(removeList, 'r') as f:
+            lines = f.read().splitlines()
+            for line in lines:
+                remove_guest.append(line)
+            f.close()
+
+        # Code to write the guests email adresses on Remo
+        enter_guest_email = WebDriverWait(self.driver, 20).until(expected_conditions.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[3]/div/div[1]/div[1]/div[2]/div/input')))
+        for guest in remove_guest:
+            enter_guest_email.send_keys(guest)
+            # If guest is removable : removed - else blocked
+            try:
+                self.driver.find_element_by_xpath('/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[3]/div/div[2]/div/div/div/table/tbody/tr[1]/td[7]/div/button[3]').click()
+                self.driver.find_element_by_xpath('/html/body/div[5]/div[3]/div/div[2]/button[1]').click()
+            except:
+                self.driver.find_element_by_xpath('/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[3]/div/div[2]/div/div/div/table/tbody/tr[1]/td[7]/div/button[2]').click()
+                self.driver.find_element_by_xpath('/html/body/div[5]/div[3]/div/div[2]/button[1]').click()
+            self.driver.find_element_by_xpath('/html/body/div[1]/div/div[3]/div/div[2]/div/div/div[1]/div/div[3]/div/div[1]/div[1]/div[2]/div/div[2]/button').click()
+
 
 if __name__ == '__main__':
     """

@@ -1,0 +1,1 @@
+- 1 : Stocker les identifiants dans un fichier sécurisé (style BD : https://docs.python.org/3/library/configparser.html)
