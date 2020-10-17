@@ -1,11 +1,11 @@
 from random import randint
 
 Guests = []
-LIST_MAX_LENGHT = 200
+LIST_MAX_LENGHT = 999
 GUESTS_QTT = 0
 
 if input('Should emails be generated randomly? [y/n]... ')[0] in 'yY':    
-    GUESTS_QTT = 601
+    GUESTS_QTT = 999
     for _ in range (GUESTS_QTT):
         email = ''
         for __ in range (8):
