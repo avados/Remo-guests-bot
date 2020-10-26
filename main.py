@@ -1,4 +1,3 @@
-import os
 from multiprocessing import Pool
 
 from time import sleep
@@ -11,9 +10,11 @@ import config as cfg
 
 
 def callos(room, action, mode):
-    torun = "python building_access.py " + room +" " + action+" " +mode 
+    # torun = "C:\Dev\Remo-guests-bot\venv\Scripts\python.exe C:\Dev\Remo-guests-bot\building_access.py " + room +" " + action+" " +mode
+    torun = "python building_access.py " + room +" " + action+" " +mode
     print(torun)
-    os.system(torun)    
+    os.system(torun)
+    # subprocess.call(torun)
 
 
 if __name__ == '__main__':
@@ -31,29 +32,36 @@ if __name__ == '__main__':
     if  "TEST" in sys.argv:
         print('Test mode') 
         MODE = "TEST"
+        BUILDING_LIST = cfg.BUILDING_LIST_TEST
     elif "PROD" in sys.argv:
         print('Prod mode') 
         MODE = "PROD"
+        BUILDING_LIST = cfg.BUILDING_LIST_PROD
     else:
         MODE = "TEST"
+        BUILDING_LIST = cfg.BUILDING_LIST_TEST
 
     if "DEL" in sys.argv:
         print('Action Del') 
-        ACTION = "DEL"
-        resulthall = pool.apply_async(callos, args= ["HALL","DEL",MODE])
-        results.append(resulthall)
 
-        resulta = pool.apply_async(callos, args= ["A","DEL",MODE])
-        results.append(resulta)
+
+        for key in BUILDING_LIST:
+            resulthall = pool.apply_async(callos, args=[key, "DEL", MODE])
+            results.append(resulthall)
+
+        # resulthall = pool.apply_async(callos, args= ["HALL","DEL",MODE])
+        # results.append(resulthall)
+        #
+        # resulta = pool.apply_async(callos, args= ["A","DEL",MODE])
+        # results.append(resulta)
         
     elif "ADD" in sys.argv:
-        print('Action add') 
-        ACTION = "ADD"
-        resulthall = pool.apply_async(callos, args= ["HALL","ADD",MODE])
-        results.append(resulthall)
+        print('Action add')
 
-        resulta = pool.apply_async(callos, args= ["A","ADD",MODE])
-        results.append(resulta)
+
+        for key in BUILDING_LIST:
+            resulthall = pool.apply_async(callos, args=[key, "ADD", MODE])
+            results.append(resulthall)
         
         
     

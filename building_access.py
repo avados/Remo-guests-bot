@@ -277,20 +277,33 @@ MODE = "TEST"
 GUEST_FILE = ""
 MODE = sys.argv[3]
 BUILDING_LIST=[]
-if  "TEST" in sys.argv:
-    print('Test mode') 
-    MODE = "TEST"
+if  MODE == "TEST" :
+    print('Test mode')
     GUEST_FILE = cfg.GUEST_FILE_TEST
     BUILDING_LIST = cfg.BUILDING_LIST_TEST
-elif "PROD" in sys.argv:
-    print('Prod mode') 
-    MODE = "PROD"
+elif MODE == "PROD" :
+    print('Prod mode')
     GUEST_FILE = cfg.GUEST_FILE_PROD
     BUILDING_LIST = cfg.BUILDING_LIST_PROD
 else:
     MODE = "TEST"
     GUEST_FILE = cfg.GUEST_FILE_TEST
     BUILDING_LIST = cfg.BUILDING_LIST_TEST
+
+# if  "TEST" in sys.argv:
+#     print('Test mode')
+#     MODE = "TEST"
+#     GUEST_FILE = cfg.GUEST_FILE_TEST
+#     BUILDING_LIST = cfg.BUILDING_LIST_TEST
+# elif "PROD" in sys.argv:
+#     print('Prod mode')
+#     MODE = "PROD"
+#     GUEST_FILE = cfg.GUEST_FILE_PROD
+#     BUILDING_LIST = cfg.BUILDING_LIST_PROD
+# else:
+#     MODE = "TEST"
+#     GUEST_FILE = cfg.GUEST_FILE_TEST
+#     BUILDING_LIST = cfg.BUILDING_LIST_TEST
 
 GUEST_LIST_200 = get_splitted_guest_list_200( GUEST_FILE )
 
