@@ -3,6 +3,7 @@ from multiprocessing import Pool
 from time import sleep
 from random import randint
 
+import os
 import sys
 import datetime
 import config as cfg
@@ -67,6 +68,7 @@ if __name__ == '__main__':
     
 
     [result.wait() for result in results]
+    [print(result.get()) for result in results]
     print("DONE")
     sleep(10)
     # os.system("python main.py HALL ADD")
