@@ -13,7 +13,7 @@ import config as cfg
 def callos(room, action, mode):
     # torun = "C:\Dev\Remo-guests-bot\venv\Scripts\python.exe C:\Dev\Remo-guests-bot\building_access.py " + room +" " + action+" " +mode
     torun = ""
-    if OS == 'nt':
+    if os == 'nt':
     # if sys.version_info[0] < 3:
         print("you must run this script with python 3" )
         print("will try to run python3 instead of python")
